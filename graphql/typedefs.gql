@@ -1,9 +1,42 @@
 type Query {
-    # Elemi példa:
     helloWorld: String
-
-    # Példa paraméterezésre:
     helloName(name: String!): String
+    presentations: [Presentation]!
+    presentation(id: ID!): Presentation
+    visitors(min: Int, max: Int): [Visitor]!
+}
 
-    # TODO: Készítsd el a schema hiányzó részeit
+type Mutation {
+    addViewer(visitorName: String!, presentationTitle: String!): String!
+    cancelPresentation(id: ID!): String!
+}
+
+type Expert {
+    id: ID!
+    name: String!
+    email: String!
+    job: String
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Visitor {
+    id: ID!
+    name: String!
+    level: Int!
+    vip: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Presentation {
+    id: ID!
+    title: String!
+    starttime: DateTime!
+    length: Int!
+    PresenterId: ID!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    presenter: Expert!
+    attendance: Int!
 }
