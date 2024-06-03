@@ -81,6 +81,11 @@ module.exports = function (fastify, opts, next) {
         },
         async (request, reply) => {
             const { name, email, job, } = request.body;
+
+            if (await Expert.findOne({ where: { email } })) {
+                return reply.status(StatusCodes.CONFLICT).send();
+            }
+            
             const expert = await Expert.create({
                 name, email, job
             });
