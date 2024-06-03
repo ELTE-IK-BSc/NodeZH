@@ -2,8 +2,9 @@
 
 // Node.js projekt zippelő
 // Készítette Tóta Dávid
+// Javította: Zámborszky Balázs
 
-const glob = require("glob");
+const glob = require("glob").globSync;
 const inquirer = require("inquirer");
 const fs = require("fs").promises;
 const { promisify } = require("util");
@@ -22,7 +23,7 @@ const stripAnsi = require("strip-ansi");
 const { isBinaryFileSync } = require("isbinaryfile");
 const config = require("./zip.config.js");
 
-const pGlob = promisify(glob);
+const pGlob = (...args) => Promise.resolve(glob(...args));
 const currentDate = new Date();
 
 const tableConfig = {
@@ -128,7 +129,7 @@ const checkZip = async (zippedFiles, zipPath) => {
         const parsed = path.parse(file);
         const originalFileContentBuffer = await fs.readFile(file);
         const originalChecksum = checksum(originalFileContentBuffer);
-        const zippedFileContentBuffer = zipFile.getEntry(file).getData();
+        const zippedFileContentBuffer = zipFile.getEntry(file.replace(/\\/g, "/")).getData();
         const zippedChecksum = checksum(zippedFileContentBuffer);
         const checksumMatch = originalChecksum === zippedChecksum;
         if (!checksumMatch)
