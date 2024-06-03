@@ -139,6 +139,21 @@ module.exports = function (fastify, opts, next) {
             })));
         });
 
+    // 8. feladat
+    fastify.get("/visitor-stats",
+        async (request, reply) => {
+            const avglevel = (await Visitor.findAll()).reduce((s, w) => w.temp + s, 0) / (await Visitor.count());
+            reply.send(
+                {
+                    vipPercentage: await Visitor.count({ where: { vip: true } }) / await Visitor.count(),
+                    averageLevel: avglevel,
+                    underAverageLevel: await Visitor.count({ where: { level: { [Op.lt]: avglevel } } }),
+                    longestName: "",
+
+                }
+            );
+        });
+
     next();
 };
 
