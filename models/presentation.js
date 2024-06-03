@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            this.belongsTo(models.Expert, {
+                foreignKey: "PresenterId",
+            });
+            this.belongsToMany(models.Visitor, {
+                through: "Viewings",
+            });
         }
     }
     Presentation.init(
