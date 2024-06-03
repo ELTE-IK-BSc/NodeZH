@@ -1,10 +1,12 @@
 const { StatusCodes } = require("http-status-codes");
 const S = require("fluent-json-schema");
 const db = require("../models");
+const { where } = require("sequelize");
+const { SELECT } = require("sequelize/lib/query-types");
 const { Sequelize, sequelize } = db;
 const { ValidationError, DatabaseError, Op } = Sequelize;
 // TODO: Importáld a modelleket
-// const { /* modellek importálása itt */ } = db;
+const { Expert, Presentation, Visitor } = db;
 
 module.exports = function (fastify, opts, next) {
     // http://127.0.0.1:4000/
@@ -22,6 +24,14 @@ module.exports = function (fastify, opts, next) {
     fastify.get("/auth-protected", { onRequest: [fastify.auth] }, async (request, reply) => {
         reply.send({ user: request.user });
     });
+
+    // 3. feladat
+    fastify.get("/vips", async (request, reply) => {
+        const vips = await Visitor.findAll({ where: { vip: true }, order: [['name', 'ASC']] });
+        reply.send(vips.map(vip => ({ id: vip.id, name: vip.name, level: vip.level })));
+    });
+
+
 
     next();
 };
