@@ -31,6 +31,39 @@ module.exports = function (fastify, opts, next) {
         reply.send(vips.map(vip => ({ id: vip.id, name: vip.name, level: vip.level })));
     });
 
+    // 4. feladat
+    fastify.get("/visitors/:id",
+        {
+            schema: {
+                params: {
+                    type: 'object',
+                    required: ['id'],
+                    properties: {
+                        id: { type: 'integer' }
+                    }
+                }
+            }
+        },
+        async (request, reply) => {
+            const { id } = request.params;
+            const visitor = await Visitor.findByPk(id);
+
+            if (!visitor) {
+                return reply.status(StatusCodes.NOT_FOUND).send();
+            }
+
+
+            reply.send({
+                id: visitor.id,
+                name: visitor.name,
+                level: visitor.level,
+                vip: visitor.vip,
+                createdAt: visitor.createdAt,
+                updatedAt: visitor.updatedAt,
+                presentationCount: await visitor.countPresentations(),
+            });
+        });
+
 
 
     next();
