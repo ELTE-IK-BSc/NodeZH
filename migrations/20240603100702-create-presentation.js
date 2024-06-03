@@ -29,6 +29,15 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
+            PresenterId: {
+                allowNull: false,
+                references: {
+                    model: 'experts',
+                    key: 'id',
+                },
+                onDelete: 'cascade',
+                type: Sequelize.INTEGER,
+            },
         });
     },
     async down(queryInterface, Sequelize) {
