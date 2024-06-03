@@ -64,6 +64,30 @@ module.exports = function (fastify, opts, next) {
             });
         });
 
+    // 5. feladat
+    fastify.post("/experts",
+        {
+            schema: {
+                body: {
+                    type: 'object',
+                    required: ['name', 'email'],
+                    properties: {
+                        name: { type: 'string' },
+                        email: { type: 'string' },
+                        job: { type: 'string', default: null },
+                    }
+                }
+            }
+        },
+        async (request, reply) => {
+            const { name, email, job, } = request.body;
+            const expert = await Expert.create({
+                name, email, job
+            });
+
+            reply.status(StatusCodes.CREATED).send(expert);
+        });
+
 
 
     next();
