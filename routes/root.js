@@ -120,8 +120,24 @@ module.exports = function (fastify, opts, next) {
         });
 
 
-
-
+    // 7. feladat
+    fastify.get("/my-presentations",
+        {
+            onRequest: [fastify.auth],
+        },
+        async (request, reply) => {
+            const presentations = await Presentation.findAll({ where: { PresenterId: request.user.id }, order: [['starttime', 'ASC']] })
+            reply.send(presentations.map(pres => ({
+                id: pres.id,
+                title: pres.title,
+                starttime: pres.starttime,
+                length: pres.length,
+                PresenterId: pres.PresenterId,
+                createdAt: pres.createdAt,
+                updatedAt: pres.updatedAt,
+                endtime: new Date(pres.startTime).getTime() + pres.length * 60000,
+            })));
+        });
 
     next();
 };
