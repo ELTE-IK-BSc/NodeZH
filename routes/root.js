@@ -145,9 +145,9 @@ module.exports = function (fastify, opts, next) {
             const avglevel = (await Visitor.findAll()).reduce((s, w) => w.temp + s, 0) / (await Visitor.count());
             reply.send(
                 {
-                    vipPercentage: await Visitor.count({ where: { vip: true } }) / await Visitor.count(),
+                    vipPercentage: (await Visitor.count({ where: { vip: true } })) / (await Visitor.count()),
                     averageLevel: avglevel,
-                    underAverageLevel: await Visitor.count({ where: { level: { [Op.lt]: avglevel } } }),
+                    underAverageLevel: (await Visitor.count({ where: { level: { [Op.lt]: avglevel } } })),
                     longestName: "",
 
                 }
