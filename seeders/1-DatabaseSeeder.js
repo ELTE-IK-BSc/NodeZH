@@ -57,8 +57,7 @@ module.exports = {
         for (const presentation of presentations) {
 
             const currvis = faker.helpers.arrayElements(visitors);
-            presentation.addVisitors(currvis);
-
+            await presentation.setVisitors(currvis);
             console.log(chalk.yellow(`Presentation #${presentation.id} | ${currvis.length} Visitor hozzáadva.`));
         }
 
