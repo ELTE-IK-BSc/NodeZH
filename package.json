@@ -13,7 +13,8 @@
         "oldtest": "node test/tester.js",
         "tester": "npm run test",
         "oldtester": "npm run oldtest",
-        "prettier": "npx prettier --write \"**/*.{js,mjs,json,gql}\""
+        "prettier": "npx prettier --write \"**/*.{js,mjs,json,gql}\"",
+        "start": "node server.js"
     },
     "dependencies": {
         "@faker-js/faker": "^8.4.1",
