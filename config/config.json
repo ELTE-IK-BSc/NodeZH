@@ -1,7 +1,8 @@
 {
     "development": {
         "storage": "database/database.sqlite",
-        "dialect": "sqlite"
+        "dialect": "sqlite",
+        "use_env_variable":""
     },
     "test": {
         "dialect": "sqlite",
